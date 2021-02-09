@@ -137,10 +137,11 @@ class MenuController: NSObject, NSMenuDelegate {
 
     // when menu.xib loaded
     override func awakeFromNib() {
+        // install before launch
+        V2rayLaunch.install()
+
         // windowWillClose Notification
         NotificationCenter.default.addObserver(self, selector: #selector(configWindowWillClose(notification:)), name: NSWindow.willCloseNotification, object: nil)
-
-        V2rayLaunch.chmodCmdPermission()
 
         // backup system proxy when init
         V2rayLaunch.setSystemProxy(mode: .backup)
@@ -383,7 +384,7 @@ class MenuController: NSObject, NSMenuDelegate {
     }
 
     @IBAction func goHelp(_ sender: NSMenuItem) {
-        guard let url = URL(string: "https://github.com/yanue/v2rayu/wiki") else {
+        guard let url = URL(string: "https://github.com/yanue/v2rayu/issues") else {
             return
         }
         NSWorkspace.shared.open(url)
@@ -406,7 +407,7 @@ class MenuController: NSObject, NSMenuDelegate {
             let totalSpaceCnt = 10
             var spaceCnt = totalSpaceCnt - ping.count
             // littleSpace: 1,.
-            if ping.contains(".") || ping.contains("1"){
+            if ping.contains(".") || ping.contains("1") {
                 let littleSpaceCount = ping.filter({ $0 == "." }).count + ping.filter({ $0 == "1" }).count
                 spaceCnt = totalSpaceCnt - ((ping.count - littleSpaceCount) + Int((ping.count - littleSpaceCount)/2))
             }
@@ -415,7 +416,7 @@ class MenuController: NSObject, NSMenuDelegate {
             }
             let space = String(repeating: " ", count: spaceCnt < 0 ? 0 : spaceCnt) + "　"
 
-            menuItem.title = ping + space + item.remark
+            menuItem.title = item.remark
             menuItem.action = #selector(self.switchServer(_:))
             menuItem.representedObject = item
             menuItem.target = self

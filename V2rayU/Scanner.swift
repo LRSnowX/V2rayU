@@ -337,7 +337,7 @@ class VmessUri {
     var type: String = "none"
     var uplinkCapacity: Int = 50
     var downlinkCapacity: Int = 20
-    var allowInsecure: Bool = true
+    var allowInsecure: Bool = false
     var tlsServer: String = ""
     var mux: Bool = true
     var muxConcurrency: Int = 8
@@ -416,6 +416,9 @@ class VmessUri {
                 break
             case "h2host":
                 self.netHost = param[1]
+                break
+            case "aid":
+                self.alterId = Int(param[1]) ?? 0
                 break
             case "tls":
                 self.tls = param[1] == "1" ? "tls" : "none"
